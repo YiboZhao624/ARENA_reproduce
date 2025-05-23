@@ -15,4 +15,4 @@ for i in "${!names[@]}"; do
   python ../src/datamaker_conversation.py --name "$name" --testfile-name "test"
 done
 
-python ../src/datamaker_grpo.py --name "hotpotqa" "two_wiki" "musique" --trainfile-name "train"
+python ../src/datamaker_grpo.py --name "hotpotqa" "two_wiki" "musique" --trainfile-name "train" --saved-name "grpo_25000"

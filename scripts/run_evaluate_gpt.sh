@@ -1,1 +1,1 @@
-python ../src/gpt_eval --name "hotpotqa" --result-name "test_base_500"
+python ../src/gpt_eval.py --name "hotpotqa" --result-name "test_base_500"

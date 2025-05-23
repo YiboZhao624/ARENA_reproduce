@@ -3,3 +3,11 @@ model
 results
 checkpoints
 pikerag/data_process/data
+
+__pycache__/
+*.egg-info/
+**/*.egg-info/
+wandb/
+**/wandb/
+.DS_Store
+.vscode/

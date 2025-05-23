@@ -6,7 +6,7 @@ from tqdm import tqdm
 import os
 import time
 
-from gpt_api import my_openai_call
+# from gpt_api import openai_call
 
 from evaluate import format_score, accuracy_score, relevance_score, get_all_scores, extract_answer
 
@@ -82,7 +82,7 @@ def accuracy_reward(completions, answers, **kwargs):
     #     if prompt == '':
     #         scores.append(0.0)
     #     else:
-    #         response = my_openai_call(prompt)
+    #         response = openai_call(prompt)
     #         scores.append(get_score(response))
     
     scores = []

@@ -13,7 +13,7 @@ if __name__ == '__main__':
     testfile_name = args.testfile_name
 
     # Load test data from JSONL file
-    data_path = f'../data/data_raw/{name}/{testfile_name}.jsonl'
+    data_path = f'../data/data_direct/{name}/{testfile_name}.jsonl'
     data = []
     with open(data_path, 'r', encoding='utf-8') as f:
         for line in f:

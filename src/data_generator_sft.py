@@ -3,7 +3,7 @@ import os
 import random
 import argparse
 
-def load_and_process_data(data_path, prompt_template, limit, name):
+def load_and_process_data(data_path, prompt_template_first_step, prompt_template_second_step, limit, name):
     data = []
 
     with open(data_path, 'r', encoding='utf-8') as f:
@@ -50,12 +50,17 @@ def load_and_process_data(data_path, prompt_template, limit, name):
         supporting_ids = sorted(set(supporting_ids))
         supporting_facts_lens[len(supporting_ids)] += 1
 
-        prompt = prompt_template.format(question=question, references=context)
+        relevance_ids = str(supporting_ids)
+        answer = random.choice(answers)
+        prompt_first_step = prompt_template_first_step.format(question=question, references=context, relevance_ids=relevance_ids, answer=answer)
+
+        prompt_second_step = prompt_template_second_step.format(question=question, references=context)
         question_type = item['question_type']
 
         processed_data.append({
-            'prompt': prompt,
-            'answers': answers,
+            'prompt_first_step': prompt_first_step,
+            'prompt_second_step': prompt_second_step,
+            'answer': answer,
             'question_type': question_type,
             'supporting_ids': supporting_ids,
             'supporting_facts': supporting_facts,
@@ -65,24 +70,37 @@ def load_and_process_data(data_path, prompt_template, limit, name):
     print(f'Supporting facts length distribution: {supporting_facts_lens}')
     return processed_data
 
-# naive grpo
-# prompt_template = '''Answer the question based on the given information. Your response MUST strictly follow this format:
+def make_dialogs(data):
+    dialogs = []
+    for item in data:
+        dialog = {
+            "prompt": [{"role": "user", "content": item['prompt_first_step']}],
+            "prompt_second_step": [{"role": "user", "content": item['prompt_second_step']}],
+            "answer": item['answer'],
+            "supporting_ids": item.get('supporting_ids', []),
+            "name": item['name'],
+        }
+        dialogs.append(dialog)
+    
+    return dialogs
 
-# <think>
-# [Analyze the question and reason step-by-step. If references help, explain how the information is used. If references are irrelevant, clarify that and try to answer the question based on your knowledge.]
-# </think>
-# <answer>
-# [Answer with ONLY a short phrase or single word. No explanations.]
-# </answer>
+# for reasoning
+prompt_template_first_step = '''Generate a thinking process showing how to derive the given answer using ONLY the specified relevance IDs from provided references.
+**Question**:
+{question}
 
-# **References**:
-# {references}
+**References**:
+{references}
 
-# **Question**: 
-# {question}
-# '''
+**Relevance IDs**:
+{relevance_ids}
 
-prompt_template = '''A conversation between User and Assistant. The user asks a question and give some references. The assistant should answer the question based on the references. 
+**Answer**:
+{answer}
+'''
+
+# second step
+prompt_template_second_step = '''A conversation between User and Assistant. The user asks a question and give some references. The assistant should answer the question based on the references. 
 User's input will always contain:
 
 <question>
@@ -134,19 +152,22 @@ if __name__ == '__main__':
 
     random.seed(123456)
 
-    test_data = load_and_process_data(test_datapath, prompt_template, test_limit, name)
-    train_data = load_and_process_data(train_datapath, prompt_template, train_limit, name)
+    test_data = load_and_process_data(test_datapath, prompt_template_first_step, prompt_template_second_step, test_limit, name)
+    train_data = load_and_process_data(train_datapath, prompt_template_first_step, prompt_template_second_step, train_limit, name)
+
+    test_data = make_dialogs(test_data)
+    train_data = make_dialogs(train_data)
 
     print(f'Train data size: {len(train_data)}')
     print(f'Test data size: {len(test_data)}')
 
-    output_dir = f'../data/data_direct/{name}'
+    output_dir = f'../data/data_conversation/{name}'
     os.makedirs(output_dir, exist_ok=True)
 
-    with open(os.path.join(output_dir, 'train.jsonl'), 'w', encoding='utf-8') as f:
+    with open(os.path.join(output_dir, 'train_sft_first_step.jsonl'), 'w', encoding='utf-8') as f:
         for item in train_data:
             f.write(json.dumps(item, ensure_ascii=False) + '\n')
 
-    with open(os.path.join(output_dir, 'test.jsonl'), 'w', encoding='utf-8') as f:
+    with open(os.path.join(output_dir, 'test_sft_first_step.jsonl'), 'w', encoding='utf-8') as f:
         for item in test_data:
             f.write(json.dumps(item, ensure_ascii=False) + '\n')

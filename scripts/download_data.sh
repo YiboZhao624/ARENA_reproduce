@@ -1,0 +1,1 @@
+python ../pikerag/main.py ../pikerag/data_process/config/datasets.yaml

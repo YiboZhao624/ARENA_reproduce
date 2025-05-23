@@ -56,6 +56,7 @@ _deps = [
     "latex2sympy2_extended>=1.0.6",
     "liger_kernel==0.5.2",
     # "lighteval @ git+https://github.com/huggingface/lighteval.git@86f62259f105ae164f655e0b91c92a823a742724#egg=lighteval[math]",
+    "lighteval==0.10.0",
     "math-verify==0.5.2",  # Used for math verification in grpo
     "packaging>=23.0",
     "parameterized>=0.9.0",
@@ -67,6 +68,7 @@ _deps = [
     "sentencepiece>=0.1.99",
     "torch==2.5.1",
     # "transformers @ git+https://github.com/huggingface/transformers.git@main",
+    "transformers==4.51.3",
     # "trl @ git+https://github.com/huggingface/trl.git@main",
     "vllm==0.7.1",
     "wandb>=0.19.1",
@@ -110,7 +112,7 @@ install_requires = [
     deps["safetensors"],
     deps["sentencepiece"],
     deps["transformers"],
-    deps["trl"],
+    # deps["trl"],
 ]
 
 setup(
