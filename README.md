@@ -24,9 +24,12 @@ Extensive experiments on multi-hop QA datasets using **Qwen2.5-7B-Instruct** and
 ---
 
 📷 *Overview illustration here:*  
-*(Please insert the screenshot from your paper below this line)*
 
 ![ARENA Overview](figures/arena-overview.png)
+
+📊 *Main experimental results (Figure from the paper):*
+
+![ARENA Main Results](figures/arena-results.png)
 
 ## Usage
 
