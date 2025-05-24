@@ -49,7 +49,7 @@ All scripts are provided in the `scripts/` folder.
 Run the following script to install required dependencies:
 
 ```bash
-bash scripts/install_environment.sh
+bash install_environment.sh
 ```
 
 This script does the following:
@@ -86,7 +86,7 @@ pip install -e ".[dev]"
 Run the following script to download the three multi-hop QA datasets used in our experiments:
 
 ```bash
-bash scripts/download_data.sh
+bash download_data.sh
 ```
 
 This internally runs:
@@ -107,7 +107,7 @@ We have modified PIKE-RAG's data downloader to correctly handle:
 Run the following script to download the base LLMs. For example:
 
 ```bash
-bash scripts/download_model.sh
+bash download_model.sh
 ```
 
 This script uses [ModelScope](https://modelscope.cn) to download Qwen:
@@ -123,7 +123,7 @@ modelscope download --model Qwen/Qwen2.5-7B-Instruct --local_dir ../model/Qwen2.
 Run the following script to preprocess data for training:
 
 ```bash
-bash scripts/run_data_processing.sh
+bash run_data_processing.sh
 ```
 
 This will process all datasets into the format required by our **GRPO** training setup:
@@ -154,7 +154,7 @@ python ../src/datamaker_grpo.py --name "hotpotqa" "two_wiki" "musique" --trainfi
 Run the following script to start training with our GRPO framework:
 
 ```bash
-bash scripts/run_grpo.sh
+bash run_grpo.sh
 ```
 
 The core command:
@@ -178,7 +178,7 @@ To perform inference on the test set using the base model (before training), we 
 Run the following script:
 
 ```bash
-bash scripts/run_inference.sh
+bash run_inference.sh
 ```
 
 This internally calls:
@@ -202,7 +202,7 @@ You can evaluate the inference results using either rule-based metrics or LLM-as
 #### Rule-based Evaluation (EM / F1)
 
 ```bash
-bash scripts/run_evaluate_rulebase.sh
+bash run_evaluate_rulebase.sh
 ```
 
 This runs:
@@ -239,7 +239,7 @@ We also provide code for reproducing the supervised fine-tuning (SFT) method des
 #### Step 1: Prepare SFT Data
 
 ```bash
-bash scripts/run_sft_prepare.sh
+bash run_sft_prepare.sh
 ```
 
 This script includes the following steps:
@@ -266,7 +266,7 @@ python ../src/datamaker_sft.py --name "hotpotqa" "two_wiki" "musique" --trainfil
 #### Step 2: Run SFT Training
 
 ```bash
-bash scripts/run_sft.sh
+bash run_sft.sh
 ```
 
 This launches supervised fine-tuning with DeepSpeed Zero2:
